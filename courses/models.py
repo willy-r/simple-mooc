@@ -1,6 +1,7 @@
 from django.db import models
 from django.db.models import Q
 from django.urls import reverse
+from django.conf import settings
 
 
 class CourseManager(models.Manager):
@@ -31,9 +32,9 @@ class Course(models.Model):
     objects = CourseManager()
 
     class Meta:
-        ordering = ('name',)
         verbose_name = 'curso'
         verbose_name_plural = 'cursos'
+        ordering = ('name',)
 
     def __str__(self):
         """A string representation of course by the name."""
@@ -41,4 +42,45 @@ class Course(models.Model):
     
     def get_absolute_url(self):
         """A url for a specific course."""
-        return reverse('courses:details', args=(self.pk, self.slug))   
+        return reverse('courses:details', args=(self.pk, self.slug))
+
+
+class Enrollment(models.Model):
+    """A enrollment for a course from a user."""
+
+    class EnrollmentStatus(models.IntegerChoices):        
+        PENDENTE = 0
+        APROVADO = 1
+        CANCELADO = 2
+
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        verbose_name='Usuário',
+        related_name='enrollments',
+    )
+    course = models.ForeignKey(
+        Course,
+        on_delete=models.CASCADE,
+        verbose_name='Curso',
+        related_name='enrollments',
+    )
+    status = models.IntegerField(
+        'Situação', 
+        choices=EnrollmentStatus.choices,
+        default=EnrollmentStatus.PENDENTE,
+        blank=True,
+    )
+    created_at = models.DateTimeField('Criado em', auto_now_add=True)
+    updated_at = models.DateTimeField('Atualizado em', auto_now=True)
+
+    class Meta:
+        verbose_name = 'inscrição'
+        verbose_name_plural = 'incrições'
+        constraints = [
+            models.UniqueConstraint(fields=['user', 'course'], name='unique_enrollment')
+        ]
+    
+    def __str__(self):
+        """Username - course name - status."""
+        return f'{self.user} - {self.course} - {self.status.label}'
