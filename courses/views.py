@@ -48,4 +48,8 @@ def make_enrollment(request, pk, slug):
     )
     if created:
         enrollment.approve()
+        messages.success(request, 'Você foi inscrito no curso com sucesso!')
+    else:
+        messages.info(request, f'Você já está inscrito no curso {course.name}.')
+
     return redirect('accounts:dashboard')

@@ -105,6 +105,7 @@ def register(request):
                 password=form.cleaned_data['password1'],
             )
             login(request, user)
+            messages.info(request, 'Sua conta foi criada com sucesso, boas vindas!')
             return redirect('core:home')
 
     context = {'form': form}

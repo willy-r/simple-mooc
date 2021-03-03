@@ -159,14 +159,6 @@ ul.errorlist li {
     padding: 0;
 }
 
-ul.messages .info {
-    color: #808000;
-}
-
-ul.messages .success {
-    color: #008000;
-}
-
 form.pure-form-aligned ul.errorlist li {
     padding-left: 11.5em;
 }
@@ -229,4 +221,15 @@ ul.breadcrumb li {
 ul.breadcrumb li a {
     display: inline-block;
     padding: 0.3em 0.7em;
+}
+
+aside {
+    background: #1f8dd6;
+    padding: 0.3em 1em;
+    border-radius: 3px;
+    color: #fff;
+}
+
+aside p {
+    margin: 0.4em 0;
 }
