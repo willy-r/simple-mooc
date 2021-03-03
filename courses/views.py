@@ -1,8 +1,9 @@
 from django.contrib import messages
-from django.shortcuts import render, get_object_or_404
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, get_object_or_404, redirect
 
-from .models import Course
 from .forms import ContactCourseForm
+from .models import Course, Enrollment
 
 
 def index(request):
@@ -32,3 +33,19 @@ def details(request, pk, slug):
         'form': form,
     }
     return render(request, 'courses/details.html', context)
+
+
+@login_required
+def make_enrollment(request, pk, slug):
+    """Make the enrollment logic.
+    
+    For default all courses in the platform is free and any users can
+    make a enrollment at any time.
+    """
+    course = get_object_or_404(Course, pk=pk, slug=slug)
+    enrollment, created = Enrollment.objects.get_or_create(
+        user=request.user, course=course
+    )
+    if created:
+        enrollment.approve()
+    return redirect('accounts:dashboard')

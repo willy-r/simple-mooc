@@ -18,7 +18,7 @@ class Course(models.Model):
     """A model for a course."""
     name = models.CharField('Nome', max_length=150)
     slug = models.SlugField('Atalho')
-    description = models.TextField('Descrição simples', blank=True)
+    description = models.CharField('Descrição simples', max_length=250, blank=True)
     about = models.TextField('Sobre o curso', blank=True)
     start_date = models.DateField('Data de início', null=True, blank=True)
     image = models.ImageField(
@@ -83,4 +83,9 @@ class Enrollment(models.Model):
     
     def __str__(self):
         """Username - course name - status."""
-        return f'{self.user} - {self.course} - {self.status.label}'
+        return f'{self.user} - {self.course} - {self.EnrollmentStatus(self.status).label}'
+    
+    def approve(self):
+        """Changes the enrollment status to approved."""
+        self.status = self.EnrollmentStatus.APROVADO
+        self.save()

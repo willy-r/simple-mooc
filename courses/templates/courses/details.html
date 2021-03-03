@@ -13,7 +13,7 @@
           <h2 class="splash-subhead">
             {{ course.description }}
           </h2>
-          <p><a href="#" class="pure-button primary-button">Inscreva-se</a></p>
+          <p><a href="{% url 'courses:enrollment' course.pk course.slug %}" class="pure-button primary-button">Inscreva-se</a></p>
         </div>
       </div>
     </div>
