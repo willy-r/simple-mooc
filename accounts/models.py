@@ -69,3 +69,8 @@ class PasswordReset(models.Model):
     def __str__(self):
         """User - creation date."""
         return f'{self.user} - {self.created_at}'
+    
+    def confirm(self):
+        """Confirms the password reset, "invalidate" the token."""
+        self.confirmed = True
+        self.save() 

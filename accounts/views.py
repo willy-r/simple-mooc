@@ -81,8 +81,7 @@ def password_reset_confirm(request, token):
             form.save()
             messages.success(request, 'Sua senha foi alterada com sucesso!')
             # Invalidate the token.
-            reset.confirmed = True
-            reset.save()
+            reset.confirm()
             return redirect('accounts:login')
     
     context = {
