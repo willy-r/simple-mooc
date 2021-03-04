@@ -3,6 +3,7 @@
 {% load courses_tags %}
 
 {% block content %}
+  {% load_courses user as enrollments %}
   <div class="pure-g-r content-ribbon">
     {% include 'messages.html' %}
 
@@ -19,22 +20,25 @@
           <li class="pure-menu-heading">
             Boas vindas, <strong>{{ user }}</strong>!
           </li>
-          {% load_courses user as enrollments %}
-          <li class="pure-menu-heading">Cursos</li>
-          {% for enrollment in enrollments %}
+          {% block menu_options %}
+            <li class="pure-menu-heading">Cursos</li>
+            {% for enrollment in enrollments %}
+              <li>
+                <a href="{% url 'courses:announcements' enrollment.course.pk enrollment.course.slug %}">
+                  <i class="fas fa-book"></i> {{ enrollment.course.name }}
+                </a>
+              </li>
+            {% empty %}
+              <li><a>Nenhum curso encontrado.</a></li>
+            {% endfor %}
+            <li class="pure-menu-heading">Configurações de Conta</li>
             <li>
-              <a href="#"><i class="fas fa-book"></i> {{ enrollment.course.name }}</a>
+              <a href="{% url 'accounts:edit' %}"><i class="fas fa-cog"></i> Editar Informações</a>
             </li>
-          {% empty %}
-            <li>Nenhum curso encontrado.</li>
-          {% endfor %}
-          <li class="pure-menu-heading">Configurações de Conta</li>
-          <li>
-            <a href="{% url 'accounts:edit' %}"><i class="fas fa-cog"></i> Editar Informações</a>
-          </li>
-          <li>
-            <a href="{% url 'accounts:edit_password' %}"><i class="fas fa-lock"></i> Editar Senha</a>
-          </li>
+            <li>
+              <a href="{% url 'accounts:edit_password' %}"><i class="fas fa-lock"></i> Editar Senha</a>
+            </li>
+          {% endblock %}<!-- End menu options. -->
         </ul>
       </div>
     </div>
@@ -50,7 +54,9 @@
               </h3>
               <p>{{ enrollment.course.description }}</p>
               <div class="pure-controls">
-                <a href="#" class="pure-button pure-button-primary">Acessar</a>
+                <a href="{% url 'courses:announcements' enrollment.course.pk enrollment.course.slug %}" class="pure-button pure-button-primary">
+                  Acessar
+                </a>
                 <a href="#" class="pure-button button-error">Cancelar</a>
               </div>
             </div>

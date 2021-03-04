@@ -89,3 +89,7 @@ class Enrollment(models.Model):
         """Changes the enrollment status to approved."""
         self.status = self.EnrollmentStatus.APROVADO
         self.save()
+    
+    def is_approved(self):
+        """Returns True if the user is approved."""
+        return self.status == self.EnrollmentStatus.APROVADO

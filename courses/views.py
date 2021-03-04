@@ -7,7 +7,7 @@ from .models import Course, Enrollment
 
 
 def index(request):
-    """Display the courses."""
+    """Displays the courses."""
     courses = Course.objects.all()
 
     context = {'courses': courses}
@@ -15,7 +15,7 @@ def index(request):
 
 
 def details(request, pk, slug):
-    """Display the details about a course."""
+    """Displays the details about a course."""
     course = get_object_or_404(Course, pk=pk, slug=slug)
 
     # Process the form on that page.
@@ -37,7 +37,7 @@ def details(request, pk, slug):
 
 @login_required
 def make_enrollment(request, pk, slug):
-    """Make the enrollment logic.
+    """Makes the enrollment logic.
     
     For default all courses in the platform is free and any users can
     make a enrollment at any time.
@@ -53,3 +53,20 @@ def make_enrollment(request, pk, slug):
         messages.info(request, f'Você já está inscrito no curso {course.name}.')
 
     return redirect('accounts:dashboard')
+
+
+@login_required
+def announcements(request, pk, slug):
+    """Displays the announcements of a course."""
+    course = get_object_or_404(Course, pk=pk, slug=slug)
+
+    if not request.user.is_staff:
+        # The user has access of this course?
+        enrollment = get_object_or_404(Enrollment, user=request.user, course=course)
+        # Is the user approved on the course?
+        if not enrollment.is_approved():
+            messages.error(request, 'A sua inscrição está pendente.')
+            return redirect('accounts:dashboard')
+    
+    context = {'course': course}
+    return render(request, 'courses/announcements.html', context)
