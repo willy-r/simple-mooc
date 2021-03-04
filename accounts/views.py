@@ -5,7 +5,6 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.forms import PasswordChangeForm, SetPasswordForm
 from django.contrib.auth import authenticate, login, update_session_auth_hash
 
-
 from .forms import (
     CustomUserCreationForm, EditAccountForm, CustomPasswordResetForm
 )
@@ -14,7 +13,7 @@ from .models import PasswordReset
 
 @login_required
 def dashboard(request):
-    """Displays the profile page of a user with some config options."""
+    """Displays the dashboard with courses of the user and some config options."""
     context = {}
     return render(request, 'accounts/dashboard.html', context)
 
