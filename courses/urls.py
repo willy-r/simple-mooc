@@ -16,6 +16,10 @@ urlpatterns = [
     path('<int:pk>/<slug:slug>/inscreva-se/', 
          views.make_enrollment, 
          name='enrollment'),
+    # Ex: /cursos/1/<SLUG>/cancelar/
+    path('<int:pk>/<slug:slug>/cancelar/',
+         views.undo_enrollment,
+         name='undo_enrollment'),
     # Ex: /cursos/1/<SLUG>/anuncios/
     path('<int:pk>/<slug:slug>/anuncios/', 
          views.announcements, 

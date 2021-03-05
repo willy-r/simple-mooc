@@ -1,21 +1,4 @@
-{% extends 'accounts/dashboard.html' %}
-
-{% block menu_options %}
-  <li class="pure-menu-heading">{{ course.name }}</li>
-  <li>
-    <a href="#"><i class="fas fa-video"></i> Aulas e Materiais</a>
-  </li>
-  <li>
-    <a href="#"><i class="fas fa-info-circle"></i> Informações</a>
-  </li>
-  <li>
-    <a href="#"><i class="fas fa-envelope"></i> Anúncios</a>
-  </li>
-  <li>
-    <a href="#"><i class="fas fa-comments"></i> Fórum de Dúvidas</a>
-  </li>
-  {{ block.super }}
-{% endblock %}
+{% extends 'courses/course_dashboard.html' %}
 
 {% block dashboard_content %}
   <div class="well">

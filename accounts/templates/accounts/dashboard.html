@@ -45,7 +45,7 @@
     <div class="pure-u-2-3">
       <div class="inner">
         {% block dashboard_content %}
-          <h2>Meus Cursos</h2>
+          <h2><ins>Meus Cursos</ins></h2>
           {% for enrollment in enrollments %}
             <div class="well">
               <h3>
@@ -55,9 +55,11 @@
               <p>{{ enrollment.course.description }}</p>
               <div class="pure-controls">
                 <a href="{% url 'courses:announcements' enrollment.course.pk enrollment.course.slug %}" class="pure-button pure-button-primary">
-                  Acessar
+                  Acessar <i class="fab fa-telegram-plane"></i>
                 </a>
-                <a href="#" class="pure-button button-error">Cancelar</a>
+                <a href="{% url 'courses:undo_enrollment' enrollment.course.pk enrollment.course.slug %}" class="pure-button button-error">
+                  Cancelar <i class="fas fa-times"></i>
+                </a>
               </div>
             </div>
           {% empty %}

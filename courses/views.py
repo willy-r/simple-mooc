@@ -48,11 +48,30 @@ def make_enrollment(request, pk, slug):
     )
     if created:
         enrollment.approve()
-        messages.success(request, 'Você foi inscrito no curso com sucesso!')
+        messages.success(request, f'Você foi inscrito no curso "{course.name}" com sucesso!')
     else:
         messages.info(request, f'Você já está inscrito no curso {course.name}.')
 
     return redirect('accounts:dashboard')
+
+
+@login_required
+def undo_enrollment(request, pk, slug):
+    """Undos a enrollment from a course of a user."""
+    course = get_object_or_404(Course, pk=pk, slug=slug)
+    # The user has access of this course?
+    enrollment = get_object_or_404(Enrollment, user=request.user, course=course)
+
+    if request.method == 'POST':
+        enrollment.delete()
+        messages.success(request, 'Sua inscrição foi cancelada com sucesso!')
+        return redirect('accounts:dashboard')
+    
+    context = {
+        'enrollment': enrollment,
+        'course': course,
+    }
+    return render(request, 'courses/undo_enrollment.html', context)
 
 
 @login_required
