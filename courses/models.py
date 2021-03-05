@@ -46,7 +46,7 @@ class Course(models.Model):
 
 
 class Enrollment(models.Model):
-    """A enrollment for a course from a user."""
+    """A enrollment for a course."""
 
     class EnrollmentStatus(models.IntegerChoices):        
         PENDENTE = 0
@@ -93,3 +93,52 @@ class Enrollment(models.Model):
     def is_approved(self):
         """Returns True if the user is approved."""
         return self.status == self.EnrollmentStatus.APROVADO
+
+
+class Announcement(models.Model):
+    """A annoucement for a course."""
+    course = models.ForeignKey(
+        Course,
+        on_delete=models.CASCADE,
+        verbose_name='Curso',
+        related_name='announcements',
+    )
+    title = models.CharField('Título', max_length=100)
+    content = models.TextField('Conteúdo')
+
+    created_at = models.DateTimeField('Criado em', auto_now_add=True)
+    updated_at = models.DateTimeField('Atualizado em', auto_now=True)
+
+    class Meta:
+        verbose_name = 'anúncio'
+        verbose_name_plural = 'anúncios'
+        ordering = ('-created_at',)
+
+    def __str__(self):
+        """Returns the string representation of the model by the title."""
+        return self.title
+
+
+class Comment(models.Model):
+    """A comment in the announcement."""
+    announcement = models.ForeignKey(
+        Announcement,
+        on_delete=models.CASCADE,
+        verbose_name='Anúncio',
+        related_name='comments',
+    )
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, 
+        on_delete=models.CASCADE,
+        verbose_name='Usuário',
+        related_name='comments',
+    )
+    content = models.TextField('Comentário')
+
+    created_at = models.DateTimeField('Criado em', auto_now_add=True)
+    updated_at = models.DateTimeField('Atualizado em', auto_now=True)
+
+    class Meta:
+        verbose_name = 'comentário'
+        verbose_name_plural = 'comentários'
+        ordering = ('created_at',)
