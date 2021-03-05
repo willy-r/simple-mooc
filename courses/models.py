@@ -138,6 +138,12 @@ class Comment(models.Model):
     created_at = models.DateTimeField('Criado em', auto_now_add=True)
     updated_at = models.DateTimeField('Atualizado em', auto_now=True)
 
+    def __str__(self):
+        """A string representation of a comment."""
+        if len(self.content) > 50:
+            return f'{self.content[:50]}...'
+        return self.content
+
     class Meta:
         verbose_name = 'comentário'
         verbose_name_plural = 'comentários'

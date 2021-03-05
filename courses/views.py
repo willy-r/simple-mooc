@@ -87,5 +87,8 @@ def announcements(request, pk, slug):
             messages.error(request, 'A sua inscrição está pendente.')
             return redirect('accounts:dashboard')
     
-    context = {'course': course}
+    context = {
+        'course': course,
+        'announcements': course.announcements.all(),
+    }
     return render(request, 'courses/announcements.html', context)
