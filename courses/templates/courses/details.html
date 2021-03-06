@@ -13,7 +13,7 @@
           <h2 class="splash-subhead">
             {{ course.description }}
           </h2>
-          <p><a href="{% url 'courses:enrollment' course.pk course.slug %}" class="pure-button primary-button">Inscreva-se</a></p>
+          <p><a href="{% url 'courses:enrollment' course.pk course.slug %}" class="pure-button pure-button-primary">Inscreva-se</a></p>
         </div>
       </div>
     </div>
@@ -35,7 +35,7 @@
         {% endif %}
         
         <h4>Dúvidas?</h4>
-        <p><a href="#contato" class="pure-button">Fale Conosco</a></p>
+        <p><a href="#contato" class="pure-button pure-button-secondary">Fale Conosco</a></p>
       </div>
     </div>
   </div>
@@ -60,7 +60,7 @@
 
           <div class="pure-controls">
             <button type="submit" class="pure-button pure-button-primary">
-              <i class="fab fa-telegram-plane"></i> Enviar
+              Enviar <i class="fab fa-telegram-plane"></i>
             </button>
           </div>
         </fieldset>

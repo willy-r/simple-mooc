@@ -2,7 +2,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 
-from .forms import ContactCourseForm
+from .forms import ContactCourseForm, CommentForm
 from .models import Course, Enrollment
 
 
@@ -92,3 +92,37 @@ def announcements(request, pk, slug):
         'announcements': course.announcements.all(),
     }
     return render(request, 'courses/announcements.html', context)
+
+
+@login_required
+def announcement_details(request, course_pk, slug, announcement_pk):
+    """Displays the details about an announcement and the comments."""
+    course = get_object_or_404(Course, pk=course_pk, slug=slug)
+
+    if not request.user.is_staff:
+        # The user has access of this course?
+        enrollment = get_object_or_404(Enrollment, user=request.user, course=course)
+        # Is the user approved on the course?
+        if not enrollment.is_approved():
+            messages.error(request, 'A sua inscrição está pendente.')
+            return redirect('accounts:dashboard')
+    
+    announcement = get_object_or_404(course.announcements.all(), pk=announcement_pk)
+
+    # Adds a comment on the announcement.
+    if request.method != 'POST':
+        form = CommentForm()
+    else:
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            form.save(request.user, announcement)
+            messages.success(request, 'Seu comentário foi enviado.')
+            form = CommentForm()
+
+    context = {
+        'course': course,
+        'announcement': announcement,
+        'comments': announcement.comments.all(),
+        'form': form,
+    }
+    return render(request, 'courses/announcement_details.html', context)

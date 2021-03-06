@@ -24,4 +24,8 @@ urlpatterns = [
     path('<int:pk>/<slug:slug>/anuncios/', 
          views.announcements, 
          name='announcements'),
+    # Ex: /cursos/1/<SLUG>/anuncios/1/
+    path('<int:course_pk>/<slug:slug>/anuncios/<int:announcement_pk>/', 
+         views.announcement_details, 
+         name='announcement_details'),
 ]

@@ -2,9 +2,10 @@
 
 from django import forms
 from django.conf import settings
-from django.core.mail import send_mail
 
 from core.mail import send_mail_template
+
+from .models import Comment
 
 
 class ContactCourseForm(forms.Form):
@@ -27,3 +28,22 @@ class ContactCourseForm(forms.Form):
             context,
             [settings.CONTACT_EMAIL],
         )
+
+
+class CommentForm(forms.ModelForm):
+    """A form for a user add a comment on a announcement."""
+
+    class Meta:
+        model = Comment
+        fields = ('content',)
+        widgets = {
+            'content': forms.Textarea(attrs={'cols': 80, 'rows': 5}),
+        }
+    
+    def save(self, user, announcement, commit=True):
+        comment = super().save(commit=False)
+        comment.user = user
+        comment.announcement = announcement
+        if commit:
+            comment.save()
+        return comment

@@ -1,0 +1,55 @@
+{% extends 'courses/course_dashboard.html' %}
+
+{% block dashboard_content %}
+  <div class="well">
+    <h2>
+      {{ announcement.title }} 
+      <span class="fright">{{ announcement.created_at|date:'SHORT_DATE_FORMAT' }}</span>
+    </h2>
+    {{ announcement.content|linebreaks }}
+  </div>
+
+  <div class="well">
+    <h4 id="comments">
+      Comentários <i class="far fa-comments"></i>
+      <a class="fright" href="#add_comment">Comentar <i class="fas fa-comment-medical"></i></a>
+    </h4>
+    <hr>
+    
+    {% for comment in comments %}
+      <p>
+        <i class="fas fa-user"></i> <strong>{{ comment.user }}</strong> 
+        disse à {{ comment.created_at|timesince }}:
+        {% if comment.user == user %}
+          <a href="" class="fright"><i class="fas fa-edit"></i></a>
+        {% endif %}
+        <br>
+        {{ comment.content|linebreaksbr }}
+      </p>
+      <hr>
+    {% empty %}
+      <h4>Seja o primeiro a comentar!</h4>
+      <hr>
+    {% endfor %}
+
+    <form action="{% url 'courses:announcement_details' course.pk course.slug announcement.pk %}" id="add_comment" class="pure-form pure-form-stacked" method="POST">
+      {% csrf_token %}
+      <fieldset>
+        {{ form.non_field_errors }}
+          {% for field in form %}
+            <div class="pure-control-group">
+              {{ field.label_tag }}
+              {{ field }}
+              {{ field.errors }}
+            </div>
+          {% endfor %}
+
+        <div class="pure-controls">
+          <button type="submit" class="pure-button pure-button-primary">
+            Enviar <i class="fab fa-telegram-plane"></i>
+          </button>
+        </div>
+      </fieldset>
+    </form>
+  </div>
+{% endblock %}
