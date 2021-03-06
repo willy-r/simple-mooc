@@ -37,7 +37,7 @@ class CommentForm(forms.ModelForm):
         model = Comment
         fields = ('content',)
         widgets = {
-            'content': forms.Textarea(attrs={'cols': 80, 'rows': 5}),
+            'content': forms.Textarea(attrs={'rows': 6}),
         }
     
     def save(self, user, announcement, commit=True):

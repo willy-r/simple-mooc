@@ -1,3 +1,4 @@
+from django.http import Http404
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
@@ -126,3 +127,43 @@ def announcement_details(request, course_pk, slug, announcement_pk):
         'form': form,
     }
     return render(request, 'courses/announcement_details.html', context)
+
+
+@login_required
+def edit_comment(request, course_pk, slug, announcement_pk, comment_pk):
+    """Edits a comment on the announcement page."""
+    course = get_object_or_404(Course, pk=course_pk, slug=slug)
+    # The user has access of this course?
+    enrollment = get_object_or_404(Enrollment, user=request.user, course=course)
+
+    if not enrollment.is_approved():
+        messages.error(request, 'A sua inscrição está pendente.')
+        return redirect('accounts:dashboard')
+
+    announcement = get_object_or_404(course.announcements.all(), pk=announcement_pk)
+    comment = get_object_or_404(announcement.comments.all(), pk=comment_pk)
+    
+    if comment.user != request.user:
+        raise Http404
+
+    if request.method != 'POST':
+        form = CommentForm(instance=comment)
+    else:
+        form = CommentForm(request.POST, instance=comment)
+        if form.is_valid():
+            form.save(request.user, announcement)
+            messages.success(request, 'Seu comentário foi editado com sucesso.')
+            return redirect(
+                'courses:announcement_details',
+                course_pk=course.pk, 
+                slug=course.slug, 
+                announcement_pk=announcement.pk,
+            )
+
+    context = {
+        'course': course,
+        'announcement': announcement,
+        'comment': comment,
+        'form': form,
+    }
+    return render(request, 'courses/edit_comment.html', context)

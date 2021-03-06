@@ -1,0 +1,44 @@
+{% extends 'courses/course_dashboard.html' %}
+
+{% block breadcrumb %}
+  {{ block.super }}
+  <li>/</li>
+  <li>
+    <a href="{% url 'courses:announcement_details' course.pk course.slug announcement.pk %}">
+      {{ announcement }}
+    </a>
+  </li>
+  <li>/</li>
+  <li>
+    <a href="{% url 'courses:edit_comment' course.pk course.slug announcement.pk comment.pk %}">
+      Editar Comentário
+    </a>
+  </li>
+{% endblock %}
+
+{% block dashboard_content %}
+  <div class="well">
+    <form action="{% url 'courses:edit_comment' course.pk course.slug announcement.pk comment.pk %}" class="pure-form pure-form-stacked" method="POST">
+      {% csrf_token %}
+      <fieldset>
+        {{ form.non_field_errors }}
+        {% for field in form %}
+          <div class="pure-control-group">
+            {{ field.label_tag }}
+            {{ field }}
+            {{ field.errors }}
+          </div>
+        {% endfor %}
+
+        <div class="pure-controls">
+          <a href="{% url 'courses:announcement_details' course.pk course.slug announcement.pk %}#comments" class="pure-button pure-button-primary" rel="prev">
+            <i class="fas fa-arrow-left"></i> Comentários
+          </a>
+          <button type="submit" class="pure-button pure-button-primary">
+            <i class="far fa-save"></i> Salvar Alterações
+          </button>
+        </div>
+      </fieldset>
+    </form>
+  </div>
+{% endblock %}

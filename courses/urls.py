@@ -28,4 +28,8 @@ urlpatterns = [
     path('<int:course_pk>/<slug:slug>/anuncios/<int:announcement_pk>/', 
          views.announcement_details, 
          name='announcement_details'),
+    # Ex: /cursos/1/<SLUG>/anuncios/1/editar-comentario/1/
+    path('<int:course_pk>/<slug:slug>/anuncios/<int:announcement_pk>/editar-comentario/<int:comment_pk>/', 
+         views.edit_comment, 
+         name='edit_comment'),
 ]
