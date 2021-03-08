@@ -1,4 +1,3 @@
-from django.http import Http404
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
@@ -67,10 +66,7 @@ def password_reset(request):
 
 def password_reset_confirm(request, token):
     """Displays a form for entering a new password."""
-    reset = get_object_or_404(PasswordReset, token=token)
-
-    if reset.confirmed:
-        raise Http404
+    reset = get_object_or_404(PasswordReset, token=token, confirmed=False)
 
     if request.method != 'POST':
         form = SetPasswordForm(reset.user)
@@ -79,7 +75,7 @@ def password_reset_confirm(request, token):
         if form.is_valid():
             form.save()
             messages.success(request, 'Sua senha foi alterada com sucesso!')
-            # Invalidate the token.
+            # Invalidates the token.
             reset.confirm()
             return redirect('accounts:login')
     

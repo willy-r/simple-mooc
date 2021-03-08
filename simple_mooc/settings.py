@@ -125,7 +125,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-MEDIA_ROOT = BASE_DIR / 'simple_mooc' / 'media'
+MEDIA_ROOT = BASE_DIR / 'core' / 'media'
 MEDIA_URL = '/media/'
 
 

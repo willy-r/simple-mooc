@@ -32,7 +32,7 @@
         disse à {{ comment.created_at|timesince }}:
         {% if comment.user == user %}
           <a href="{% url 'courses:edit_comment' course.pk course.slug announcement.pk comment.pk %}" class="fright">
-            <i class="fas fa-edit"></i>
+            <abbr title="Editar Comentário"><i class="fas fa-edit"></i></abbr>
           </a>
         {% endif %}
         <br>

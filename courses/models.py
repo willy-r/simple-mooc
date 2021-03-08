@@ -76,7 +76,7 @@ class Enrollment(models.Model):
 
     class Meta:
         verbose_name = 'inscrição'
-        verbose_name_plural = 'incrições'
+        verbose_name_plural = 'inscrições'
         constraints = [
             models.UniqueConstraint(fields=['user', 'course'], name='unique_enrollment')
         ]

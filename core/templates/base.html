@@ -6,8 +6,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Simple MOOC - Uma simples plataforma de ensino a distância">
+    <meta name="keywords" content="ead, simple, mooc, simple mooc, plataforma ead, free, grátis">
+    <meta name="author" content="William Rodrigues">
+    <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
     
-    <title>Simple MOOC</title>
+    <title>Simple MOOC {% block title %}{% endblock %}</title>
     <!-- Font Awesome v5 -->
     <script src="https://kit.fontawesome.com/190e245c5e.js" crossorigin="anonymous"></script>
     <!-- Pure CSS -->
@@ -38,7 +41,11 @@
       {% block content %}{% endblock %}
 
       <div class="footer">
-        Simple MOOC - Uma simples plataforma de ensino a distância
+        Copyright &copy; {% now 'Y' %} <a href="https://github.com/willy-r" rel="external">William Rodrigues</a>
+        <br>
+        Made with &#x2764; using <a href="https://www.djangoproject.com/" rel="nofollow">Django</a>
+        <hr>
+        Simple MOOC - Uma simples plataforma EAD
       </div>
     </div><!-- /.content -->
 

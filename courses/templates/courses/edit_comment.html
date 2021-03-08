@@ -31,7 +31,7 @@
         {% endfor %}
 
         <div class="pure-controls">
-          <a href="{% url 'courses:announcement_details' course.pk course.slug announcement.pk %}#comments" class="pure-button pure-button-primary" rel="prev">
+          <a href="{% url 'courses:announcement_details' course.pk course.slug announcement.pk %}#comments" class="pure-button button-error" rel="prev">
             <i class="fas fa-arrow-left"></i> Comentários
           </a>
           <button type="submit" class="pure-button pure-button-primary">

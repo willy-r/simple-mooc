@@ -1,4 +1,3 @@
-from django.http import Http404
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
@@ -8,7 +7,7 @@ from .models import Course, Enrollment
 
 
 def index(request):
-    """Displays the courses."""
+    """Displays the courses available on the platform."""
     courses = Course.objects.all()
 
     context = {'courses': courses}
@@ -19,7 +18,7 @@ def details(request, pk, slug):
     """Displays the details about a course."""
     course = get_object_or_404(Course, pk=pk, slug=slug)
 
-    # Process the form on that page.
+    # Processes the form on that page.
     if request.method != 'POST':
         form = ContactCourseForm()
     else:
@@ -51,14 +50,14 @@ def make_enrollment(request, pk, slug):
         enrollment.approve()
         messages.success(request, f'Você foi inscrito no curso "{course.name}" com sucesso!')
     else:
-        messages.info(request, f'Você já está inscrito no curso {course.name}.')
+        messages.info(request, f'Você já está inscrito no curso "{course.name}".')
 
     return redirect('accounts:dashboard')
 
 
 @login_required
 def undo_enrollment(request, pk, slug):
-    """Undos a enrollment from a course of a user."""
+    """Undos a enrollment from a course."""
     course = get_object_or_404(Course, pk=pk, slug=slug)
     # The user has access of this course?
     enrollment = get_object_or_404(Enrollment, user=request.user, course=course)
@@ -131,7 +130,7 @@ def announcement_details(request, course_pk, slug, announcement_pk):
 
 @login_required
 def edit_comment(request, course_pk, slug, announcement_pk, comment_pk):
-    """Edits a comment on the announcement page."""
+    """Edits a comment on the announcement details page."""
     course = get_object_or_404(Course, pk=course_pk, slug=slug)
     # The user has access of this course?
     enrollment = get_object_or_404(Enrollment, user=request.user, course=course)
@@ -141,11 +140,9 @@ def edit_comment(request, course_pk, slug, announcement_pk, comment_pk):
         return redirect('accounts:dashboard')
 
     announcement = get_object_or_404(course.announcements.all(), pk=announcement_pk)
-    comment = get_object_or_404(announcement.comments.all(), pk=comment_pk)
-    
-    if comment.user != request.user:
-        raise Http404
+    comment = get_object_or_404(announcement.comments.all(), pk=comment_pk, user=request.user)
 
+    # Edits the comment.
     if request.method != 'POST':
         form = CommentForm(instance=comment)
     else:

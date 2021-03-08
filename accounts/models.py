@@ -62,8 +62,8 @@ class PasswordReset(models.Model):
     confirmed = models.BooleanField('Confirmado?', blank=True, default=False)
     
     class Meta:
-        verbose_name = 'nova senha'
-        verbose_name_plural = 'novas senhas'
+        verbose_name = 'reset de senha'
+        verbose_name_plural = 'reset de senhas'
         ordering = ('-created_at',)
     
     def __str__(self):
