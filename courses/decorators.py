@@ -7,7 +7,7 @@ from .models import Course, Enrollment
 def enrollment_required(view_func):
     """A decorator for verify if a user has a enrollment on a course.
     
-    Must have a 'pk' and a 'slug' arguments on the view_func to work.
+    Must have a 'pk' and a 'slug' parameters on the view_func to work.
     """
     def _wrapper(request, *args, **kwargs):
         pk, slug = kwargs['pk'], kwargs['slug']
