@@ -1,7 +1,9 @@
 {% if messages %}
-  <aside class="pure-u-1" type="disc">
-    {% for message in messages %}
-      <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
-    {% endfor %}
-  </aside>
+  <div class="pure-g-r content-ribbon">
+    <aside class="pure-u-1">
+      {% for message in messages %}
+        <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+      {% endfor %}
+    </aside>
+  </div>
 {% endif %}

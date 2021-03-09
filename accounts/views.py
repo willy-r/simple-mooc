@@ -19,14 +19,12 @@ def dashboard(request):
 
 @login_required
 def edit(request):
-    """Edits the account."""
-    if request.method != 'POST':
-        form = EditAccountForm(instance=request.user)
-    else:
-        form = EditAccountForm(request.POST, instance=request.user)
-        if form.is_valid():
-            form.save()
-            messages.success(request, 'Suas informações foram atualizadas.')
+    """Edits the account informations."""
+    form = EditAccountForm(request.POST or None, instance=request.user)
+    if form.is_valid():
+        form.save()
+        messages.success(request, 'Suas informações foram atualizadas.')
+        return redirect('accounts:edit')
 
     context = {'form': form}
     return render(request, 'accounts/edit.html', context)
@@ -35,15 +33,13 @@ def edit(request):
 @login_required
 def edit_password(request):
     """Edits the password."""
-    if request.method != 'POST':
-        form = PasswordChangeForm(request.user)
-    else:
-        form = PasswordChangeForm(request.user, data=request.POST)
-        if form.is_valid():
-            form.save()
-            # Re-auth the user.
-            update_session_auth_hash(request, form.user)
-            messages.success(request, 'Sua senha foi alterada com sucesso!')
+    form = PasswordChangeForm(request.user, data=request.POST or None)
+    if form.is_valid():
+        form.save()
+        # Re-auth the user.
+        update_session_auth_hash(request, form.user)
+        messages.success(request, 'Sua senha foi alterada com sucesso!')
+        return redirect('accounts:dashboard')
     
     context = {'form': form}
     return render(request, 'accounts/edit_password.html', context)
@@ -51,14 +47,11 @@ def edit_password(request):
 
 def password_reset(request):
     """Displays a form for entering the e-mail for reset the password."""
-    if request.method != 'POST':
-        form = CustomPasswordResetForm()
-    else:
-        form = CustomPasswordResetForm(request.POST)
-        if form.is_valid():
-            form.save(request)
-            messages.info(request, 'Enviamos um e-mail para você criar uma nova senha.')
-            form = CustomPasswordResetForm()
+    form = CustomPasswordResetForm(request.POST or None)
+    if form.is_valid():
+        form.save(request)
+        messages.info(request, 'Enviamos um e-mail para você criar uma nova senha.')
+        return redirect('accounts:password_reset')
 
     context = {'form': form}
     return render(request, 'accounts/password_reset.html', context)
@@ -67,17 +60,14 @@ def password_reset(request):
 def password_reset_confirm(request, token):
     """Displays a form for entering a new password."""
     reset = get_object_or_404(PasswordReset, token=token, confirmed=False)
-
-    if request.method != 'POST':
-        form = SetPasswordForm(reset.user)
-    else:
-        form = SetPasswordForm(reset.user, data=request.POST)
-        if form.is_valid():
-            form.save()
-            messages.success(request, 'Sua senha foi alterada com sucesso!')
-            # Invalidates the token.
-            reset.confirm()
-            return redirect('accounts:login')
+    
+    form = SetPasswordForm(reset.user, data=request.POST or None)
+    if form.is_valid():
+        form.save()
+        messages.success(request, 'Sua senha foi alterada com sucesso!')
+        # Invalidates the token.
+        reset.confirm()
+        return redirect('accounts:login')
     
     context = {
         'form': form,
@@ -88,20 +78,17 @@ def password_reset_confirm(request, token):
 
 def register(request):
     """Registers a new user."""
-    if request.method != 'POST':
-        form = CustomUserCreationForm()
-    else:
-        form = CustomUserCreationForm(request.POST)
-        if form.is_valid():
-            form.save()
-            user = authenticate(
-                request,
-                username=form.cleaned_data['username'], 
-                password=form.cleaned_data['password1'],
-            )
-            login(request, user)
-            messages.info(request, 'Sua conta foi criada com sucesso, boas vindas!')
-            return redirect('core:home')
+    form = CustomUserCreationForm(request.POST or None)
+    if form.is_valid():
+        form.save()
+        user = authenticate(
+            request,
+            username=form.cleaned_data['username'], 
+            password=form.cleaned_data['password1'],
+        )
+        login(request, user)
+        messages.info(request, 'Sua conta foi criada com sucesso, boas vindas!')
+        return redirect('core:home')
 
     context = {'form': form}
     return render(request, 'accounts/register.html', context)

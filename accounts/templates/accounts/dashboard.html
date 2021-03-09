@@ -2,11 +2,13 @@
 
 {% load courses_tags %}
 
+{% block title %}
+  | Painel
+{% endblock %}
+
 {% block content %}
   {% load_courses user as enrollments %}
   <div class="pure-g-r content-ribbon">
-    {% include 'messages.html' %}
-
     <div class="pure-u-1">
       <ul class="breadcrumb">
         {% block breadcrumb %}
