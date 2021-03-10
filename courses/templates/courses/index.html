@@ -2,6 +2,10 @@
 
 {% load static %}
 
+{% block title %}
+  | Cursos
+{% endblock %}
+
 {% block content %}
   <div class="pure-g-r content-ribbon">
     <div class="pure-u-1">
@@ -18,16 +22,18 @@
         <div class="l-box">
           <a href="{{ course.get_absolute_url }}">
             {% if course.image %}
-              <img src="{{ course.image.url }}" alt="{{ course.name }}">
+              <img src="{{ course.image.url }}" alt="Imagem do curso {{ course.name }}">
             {% else %}
-              <img src="{% static 'images/course-image.png' %}" alt="{{ course.name }}">
+              <img src="{% static 'images/course-image.png' %}" alt="Imagem do curso {{ course.name }}">
             {% endif %}
           </a>
         </div>
       </div>
       <div class="pure-u-2-3">
         <div class="l-box">
-          <h4 class="content-subhead"><a href="{{ course.get_absolute_url }}">{{ course.name }}</a></h4>
+          <h4 class="content-subhead">
+            <a href="{{ course.get_absolute_url }}">{{ course.name }}</a>
+          </h4>
           {{ course.description|linebreaks }}
         </div>
       </div>
@@ -36,7 +42,7 @@
     <div class="pure-g-r content-ribbon">
       <div class="pure-u-1">
         <div class="l-box">
-          <p>Nenhum curso está disponível na plataforma ainda.</p>
+          <h3>Nenhum curso está disponível na plataforma.</h3>
         </div>
       </div>
     </div>

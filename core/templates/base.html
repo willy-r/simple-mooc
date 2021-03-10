@@ -6,8 +6,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Simple MOOC - Uma simples plataforma de ensino a distância">
+    <meta name="keywords" content="ead, simple, mooc, simple mooc, plataforma ead, free, grátis">
+    <meta name="author" content="William Rodrigues">
+    <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
     
-    <title>Simple MOOC</title>
+    <title>Simple MOOC {% block title %}{% endblock %}</title>
+    <!-- Font Awesome v5 -->
+    <script src="https://kit.fontawesome.com/190e245c5e.js" crossorigin="anonymous"></script>
     <!-- Pure CSS -->
     <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.3.0/pure-min.css">
     <!-- Local CSS -->
@@ -16,27 +21,32 @@
   <body>
     <div class="header">
       <div class="pure-menu pure-menu-open pure-menu-fixed pure-menu-horizontal">
-        <a class="pure-menu-heading" href="{% url 'core:home' %}">SIMPLE MOOC</a>
+        <a class="pure-menu-heading" href="{% url 'core:home' %}"><i class="fas fa-home"></i> SIMPLE MOOC</a>
         <ul>
           <li class="pure-menu-selected"><a href="{% url 'core:home' %}">Início</a></li>
           <li><a href="{% url 'courses:index' %}">Cursos</a></li>
           <li><a href="{% url 'core:contact' %}">Contato</a></li>
           {% if user.is_authenticated %}
             <li><a href="{% url 'accounts:dashboard' %}">Painel</a></li>
-            <li><a href="{% url 'accounts:logout' %}">Sair</a></li>
+            <li><a href="{% url 'accounts:logout' %}"><i class="fas fa-sign-out-alt"></i> Sair</a></li>
           {% else %}
             <li><a href="{% url 'accounts:register' %}">Cadastre-se</a></li>
-            <li><a href="{% url 'accounts:login' %}">Entrar</a></li>
+            <li><a href="{% url 'accounts:login' %}"><i class="fas fa-sign-in-alt"></i> Entrar</a></li>
           {% endif %}
         </ul>
       </div>
     </div>
     
     <div class="content">
+      {% include 'messages.html' %}
       {% block content %}{% endblock %}
 
       <div class="footer">
-        Simple MOOC - Uma simples plataforma de ensino a distância
+        Copyright &copy; {% now 'Y' %} <a href="https://github.com/willy-r" rel="external">William Rodrigues</a>
+        <br>
+        Made with &#x2764; using <a href="https://www.djangoproject.com/" rel="nofollow">Django</a>
+        <hr>
+        Simple MOOC - Uma simples plataforma EAD
       </div>
     </div><!-- /.content -->
 

@@ -1,0 +1,38 @@
+{% extends 'courses/course_dashboard.html' %}
+
+{% block breadcrumb %}
+  {{ block.super }}
+  <li>/</li>
+  <li>
+    <a href="{% url 'courses:lessons' course.pk course.slug %}">
+      Aulas
+    </a>
+  </li>
+{% endblock %}
+
+{% block dashboard_content %}
+  {% for lesson in lessons %}
+    <div class="well">
+      <h2>
+        <a href="{{ lesson.get_absolute_url }}">
+          {{ lesson }}
+        </a>
+        {% if lesson.release_date %}
+          <span class="fright">{{ lesson.release_date|date:'SHORT_DATE_FORMAT' }}</span>
+        {% else %}
+          <span class="fright">(Não liberada)</span>
+        {% endif %}
+      </h2>
+      {{ lesson.description|linebreaks|truncatechars:150 }}
+      <p>  
+        <a href="{{ lesson.get_absolute_url }}">
+          <i class="far fa-eye"></i> Acessar Aula
+        </a>
+      </p>
+    </div>
+  {% empty %}
+    <div class="well">
+      <h2>Nenhuma aula disponível.</h2>
+    </div>
+  {% endfor %}
+{% endblock %}

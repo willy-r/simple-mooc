@@ -50,7 +50,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
 
 class PasswordReset(models.Model):
-    """Informations about the reset on password made by users."""
+    """A model for save the informations about the reset on password accounts."""
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
@@ -62,10 +62,14 @@ class PasswordReset(models.Model):
     confirmed = models.BooleanField('Confirmado?', blank=True, default=False)
     
     class Meta:
-        verbose_name = 'nova senha'
-        verbose_name_plural = 'novas senhas'
+        verbose_name = 'reset de senha'
+        verbose_name_plural = 'reset de senhas'
         ordering = ('-created_at',)
     
     def __str__(self):
-        """User - creation date."""
-        return f'{self.user} - {self.created_at}'
+        return f'{self.user} - {self.confirmed}'
+    
+    def confirm(self):
+        """Confirms the password reset, "invalidate" the token."""
+        self.confirmed = True
+        self.save() 

@@ -1,0 +1,26 @@
+{% extends 'courses/course_dashboard.html' %}
+
+{% block dashboard_content %}
+  {% for announcement in announcements %}
+    <div class="well">
+      <h2>
+        <a href="{{ announcement.get_absolute_url }}">
+          {{ announcement }}
+        </a>
+        <span class="fright">{{ announcement.created_at|date:'SHORT_DATE_FORMAT' }}</span>
+      </h2>
+      {{ announcement.content|linebreaks|truncatechars:200 }}
+      <p>
+        {% with num_comments=announcement.comments.count %}
+          <a href="{{ announcement.get_absolute_url }}#comments">
+            <i class="far fa-comments"></i> {{ num_comments }} Comentário{{ num_comments|pluralize }}
+          </a>
+        {% endwith %}
+      </p>
+    </div>
+  {% empty %}
+    <div class="well">
+      <h2>Nenhum anúncio criado.</h2>
+    </div>
+  {% endfor %}
+{% endblock %}

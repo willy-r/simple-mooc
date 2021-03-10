@@ -1,4 +1,8 @@
-"""All apps should use this to sending emails."""
+"""All apps should use this to send e-mails.
+
+Example:
+    from core.mail import send_mail_template
+"""
 
 from django.conf import settings
 from django.core.mail import EmailMultiAlternatives
@@ -12,7 +16,7 @@ def send_mail_template(subject,
                        recipient_list, 
                        from_email=settings.DEFAULT_FROM_EMAIL, 
                        fail_silently=False):
-    """Template to sending a html email."""
+    """Template to send one html e-mail."""
     message_html = render_to_string(template_name, context)
     message_text = striptags(message_html)
     

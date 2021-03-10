@@ -1,11 +1,15 @@
 {% extends 'base.html' %}
 
+{% block title %}
+  | Entrar
+{% endblock %}
+
 {% block content %}
   <div class="pure-g-r content-ribbon">
+    {% include 'messages.html' %}
+    
     <div class="pure-u-1">
       <h2>Informe seus dados de cadastro</h2>
-
-      {% include 'messages.html' %}
       
       <form action="{% url 'accounts:login' %}" class="pure-form pure-form-stacked" method="POST">
         {% csrf_token %}
@@ -20,7 +24,9 @@
           {% endfor %}
             
           <div class="pure-controls">
-            <button type="submit" class="pure-button pure-button-primary">Entrar</button>
+            <button type="submit" class="pure-button pure-button-primary">
+              <i class="fas fa-sign-in-alt"></i> Entrar
+            </button>
           </div>
         </fieldset>
       </form>

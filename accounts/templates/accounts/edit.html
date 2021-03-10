@@ -1,14 +1,16 @@
 {% extends 'accounts/dashboard.html' %}
 
+{% block title %}
+  | Editar Informações da Conta
+{% endblock %}
+
 {% block breadcrumb %}
   {{ block.super }}
   <li>/</li>
-  <li><a href="{% url 'accounts:edit' %}">Editar Conta</a></li>
+  <li><a href="{% url 'accounts:edit' %}">Editar Informações</a></li>
 {% endblock %}
 
 {% block dashboard_content %}
-  {% include 'messages.html' %}
-  
   <form action="{% url 'accounts:edit' %}" class="pure-form pure-form-stacked" method="POST">
     {% csrf_token %}
     <fieldset>
@@ -22,7 +24,9 @@
       {% endfor %}
 
       <div class="pure-controls">
-        <button type="submit" class="pure-button pure-button-primary">Salvar Alterações</button>
+        <button type="submit" class="pure-button pure-button-primary">
+          <i class="fas fa-save"></i> Salvar Alterações
+        </button>
       </div>
     </fieldset>
   </form>
