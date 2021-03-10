@@ -1,0 +1,65 @@
+{% extends 'courses/course_dashboard.html' %}
+
+{% block breadcrumb %}
+  {{ block.super }}
+  <li>/</li>
+  <li>
+    <a href="{% url 'courses:lessons' course.pk course.slug %}">
+      Aulas
+    </a>
+  </li>
+  <li>/</li>
+  <li>
+    <a href="{{ lesson.get_absolute_url }}">
+      {{ lesson }}
+    </a>
+  </li>
+{% endblock %}
+
+{% block dashboard_content %}
+  <div class="well">
+    <h2>
+      {{ lesson }} 
+      <span class="fright">{{ lesson.release_date|date:'SHORT_DATE_FORMAT' }}</span>
+    </h2>
+    {{ lesson.description|linebreaks }}
+  
+    <p>
+      <h4>Material da Aula</h4>
+      <table class="pure-table full">
+        <thead>
+          <tr>
+            <th>
+              Nome
+            </th>
+            <th>
+              Ação
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              Vídeo de Apresentação
+            </td>
+            <td>
+              <a href="#">
+                <i class="fas fa-video"></i> Acessar
+              </a>
+            </td>
+          </tr>
+          <tr class="pure-table-odd">
+            <td>
+              Slides da Apresentação
+            </td>
+            <td>
+              <a href="#">
+                <i class="fas fa-download"></i> Baixar
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </p>
+  </div>
+{% endblock %}

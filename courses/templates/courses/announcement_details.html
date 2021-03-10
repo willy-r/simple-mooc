@@ -4,7 +4,7 @@
   {{ block.super }}
   <li>/</li>
   <li>
-    <a href="{% url 'courses:announcement_details' course.pk course.slug announcement.pk %}">
+    <a href="{{ announcement.get_absolute_url }}">
       {{ announcement }}
     </a>
   </li>
@@ -13,7 +13,7 @@
 {% block dashboard_content %}
   <div class="well">
     <h2>
-      {{ announcement.title }} 
+      {{ announcement }} 
       <span class="fright">{{ announcement.created_at|date:'SHORT_DATE_FORMAT' }}</span>
     </h2>
     {{ announcement.content|linebreaks }}
@@ -32,7 +32,7 @@
         disse à {{ comment.created_at|timesince }}:
         {% if comment.user == user %}
           <abbr title="Editar Comentário">
-            <a href="{% url 'courses:edit_comment' course.pk course.slug announcement.pk comment.pk %}" class="fright">
+            <a href="{{ comment.get_absolute_url }}" class="fright">
               <i class="fas fa-edit"></i>
             </a>
           </abbr>
@@ -46,7 +46,7 @@
       <hr>
     {% endfor %}
 
-    <form action="{% url 'courses:announcement_details' course.pk course.slug announcement.pk %}" id="add_comment" class="pure-form pure-form-stacked" method="POST">
+    <form action="{{ announcement.get_absolute_url }}" id="add_comment" class="pure-form pure-form-stacked" method="POST">
       {% csrf_token %}
       <fieldset>
         {{ form.non_field_errors }}

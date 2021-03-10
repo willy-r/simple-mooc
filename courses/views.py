@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 
 from .forms import ContactCourseForm, CommentForm
-from .models import Course, Enrollment
+from .models import Course, Enrollment, Lesson
 from .decorators import enrollment_required
 
 
@@ -124,12 +124,7 @@ def edit_comment(request, pk, slug, announcement_pk, comment_pk):
     if form.is_valid():
         form.save(request.user, announcement)
         messages.success(request, 'Seu comentário foi editado com sucesso.')
-        return redirect(
-            'courses:announcement_details',
-            pk=course.pk, 
-            slug=course.slug, 
-            announcement_pk=announcement.pk,
-        )
+        return redirect(announcement)
 
     context = {
         'course': course,
@@ -138,3 +133,38 @@ def edit_comment(request, pk, slug, announcement_pk, comment_pk):
         'form': form,
     }
     return render(request, 'courses/edit_comment.html', context)
+
+
+@login_required
+@enrollment_required
+def lessons(request, pk, slug):
+    """Displays the lessons of a course."""
+    course = request.course
+    lessons = course.released_lessons()
+
+    if request.user.is_staff:
+        lessons = course.lessons.all()
+
+    context = {
+        'course': course,
+        'lessons': lessons,
+    }
+    return render(request, 'courses/lessons.html', context)
+
+
+@login_required
+@enrollment_required
+def lesson_details(request, pk, slug, lesson_pk):
+    """Displays the details about a lesson."""
+    course = request.course
+    lesson = get_object_or_404(Lesson, course=course, pk=lesson_pk)
+
+    if not request.user.is_staff and not lesson.is_available():
+        messages.error(request, 'Esta aula não está disponível.')
+        return redirect('courses:lessons', pk=course.pk, slug=course.slug)
+
+    context = {
+        'course': course,
+        'lesson': lesson,
+    }
+    return render(request, 'courses/lesson_details.html', context)

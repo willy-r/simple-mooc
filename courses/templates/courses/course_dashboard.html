@@ -3,13 +3,14 @@
 {% block breadcrumb %}
   {{ block.super }}
   <li>/</li>
-  <li><a href="{% url 'courses:announcements' course.pk course.slug %}">{{ course.name }}</a></li>
+  <li><a href="{% url 'courses:announcements' course.pk course.slug %}">{{ course }}</a></li>
 {% endblock %}
 
 {% block menu_options %}
-  <li class="pure-menu-heading">{{ course.name }}</li>
+  <li class="pure-menu-heading">{{ course }}</li>
   <li>
-    <a href="#"><i class="fas fa-video"></i> Aulas e Materiais</a>
+    <a href="{% url 'courses:lessons' course.pk course.slug %}">
+      <i class="fas fa-video"></i> Aulas e Materiais</a>
   </li>
   <li>
     <a href="#"><i class="fas fa-info-circle"></i> Informações</a>

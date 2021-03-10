@@ -20,7 +20,12 @@
       <div class="pure-menu pure-menu-open">
         <ul>
           <li class="pure-menu-heading">
-            Boas vindas, <strong>{{ user }}</strong>!
+            Boas vindas, 
+            {% if user.is_staff %}
+              <strong>Administrador</strong>!
+            {% else %}
+              <strong>{{ user }}</strong>!
+            {% endif %}
           </li>
           {% block menu_options %}
             <li class="pure-menu-heading">Cursos</li>

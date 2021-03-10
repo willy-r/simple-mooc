@@ -4,13 +4,13 @@
   {{ block.super }}
   <li>/</li>
   <li>
-    <a href="{% url 'courses:announcement_details' course.pk course.slug announcement.pk %}">
+    <a href="{{ announcement.get_absolute_url }}">
       {{ announcement }}
     </a>
   </li>
   <li>/</li>
   <li>
-    <a href="{% url 'courses:edit_comment' course.pk course.slug announcement.pk comment.pk %}">
+    <a href="{{ comment.get_absolute_url }}">
       Editar Comentário
     </a>
   </li>
@@ -18,7 +18,7 @@
 
 {% block dashboard_content %}
   <div class="well">
-    <form action="{% url 'courses:edit_comment' course.pk course.slug announcement.pk comment.pk %}" class="pure-form pure-form-stacked" method="POST">
+    <form action="{{ comment.get_absolute_url }}" class="pure-form pure-form-stacked" method="POST">
       {% csrf_token %}
       <fieldset>
         {{ form.non_field_errors }}
@@ -31,7 +31,7 @@
         {% endfor %}
 
         <div class="pure-controls">
-          <a href="{% url 'courses:announcement_details' course.pk course.slug announcement.pk %}#comments" class="pure-button button-error" rel="prev">
+          <a href="{{ announcement.get_absolute_url }}#comments" class="pure-button button-error" rel="prev">
             <i class="fas fa-arrow-left"></i> Comentários
           </a>
           <button type="submit" class="pure-button pure-button-primary">

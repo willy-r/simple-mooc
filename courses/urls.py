@@ -12,6 +12,12 @@ urlpatterns = [
     path('', views.index, name='index'),
     # Ex: /cursos/1/<SLUG>/
     path('<int:pk>/<slug:slug>/', views.details, name='details'),
+    # Ex: /cursos/1/<SLUG>/aulas/
+    path('<int:pk>/<slug:slug>/aulas/', views.lessons, name='lessons'),
+    # Ex: /cursos/1/<SLUG>/aulas/1/
+    path('<int:pk>/<slug:slug>/aulas/<int:lesson_pk>/', 
+         views.lesson_details, 
+         name='lesson_details'),
     # Ex: /cursos/1/<SLUG>/inscreva-se/
     path('<int:pk>/<slug:slug>/inscreva-se/', 
          views.make_enrollment, 
