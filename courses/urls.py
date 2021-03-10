@@ -18,6 +18,10 @@ urlpatterns = [
     path('<int:pk>/<slug:slug>/aulas/<int:lesson_pk>/', 
          views.lesson_details, 
          name='lesson_details'),
+	# Ex: /cursos/1/<SLUG>/aulas/materiais/1/
+    path('<int:pk>/<slug:slug>/aulas/materiais/<int:material_pk>/', 
+         views.material_details, 
+         name='material_details'),
     # Ex: /cursos/1/<SLUG>/inscreva-se/
     path('<int:pk>/<slug:slug>/inscreva-se/', 
          views.make_enrollment, 

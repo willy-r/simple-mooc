@@ -105,7 +105,7 @@ class Material(models.Model):
         related_name='materials',
     )
     name = models.CharField('Nome', max_length=100)
-    embedded = models.TextField('Vídeo da aula', blank=True)
+    url = models.URLField('Vídeo da aula', blank=True)
     resource = models.FileField(
         'Recurso',
         upload_to=material_directory_path, 
@@ -121,7 +121,14 @@ class Material(models.Model):
     
     def is_embedded(self):
         """Returns True if exists a embedded video."""
-        return bool(self.embedded)
+        return bool(self.url)
+    
+    def get_absolute_url(self):
+        """A url for a specific material."""
+        return reverse(
+            'courses:material_details', 
+            args=(self.lesson.course.pk, self.lesson.course.slug, self.pk),
+        )
 
 
 class Enrollment(models.Model):

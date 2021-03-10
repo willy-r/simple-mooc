@@ -26,40 +26,42 @@
   
     <p>
       <h4>Material da Aula</h4>
-      <table class="pure-table full">
-        <thead>
-          <tr>
-            <th>
-              Nome
-            </th>
-            <th>
-              Ação
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>
-              Vídeo de Apresentação
-            </td>
-            <td>
-              <a href="#">
-                <i class="fas fa-video"></i> Acessar
-              </a>
-            </td>
-          </tr>
-          <tr class="pure-table-odd">
-            <td>
-              Slides da Apresentação
-            </td>
-            <td>
-              <a href="#">
-                <i class="fas fa-download"></i> Baixar
-              </a>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      {% if lesson.materials.all.exists %}
+        <table class="pure-table full">
+          <thead>
+            <tr>
+              <th>
+                Nome
+              </th>
+              <th>
+                Ação
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for material in lesson.materials.all %}
+              <tr class="{% cycle '' 'pure-table-odd' %}">
+                <td>
+                  {{ material }}
+                </td>
+                <td>
+                  {% if material.is_embedded %}
+                    <a href="{{ material.get_absolute_url }}">
+                      <i class="fas fa-video"></i> Acessar
+                    </a>
+                  {% else %}
+                    <a href="{{ material.resource.url }}" download="{{ material.resource.name }}" type="application/octet-stream">
+                      <i class="fas fa-download"></i> Baixar
+                    </a>
+                  {% endif %}
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      {% else %}
+        <h4>Não disponível.</h4>
+      {% endif %}
     </p>
   </div>
 {% endblock %}

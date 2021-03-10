@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 
 from .forms import ContactCourseForm, CommentForm
-from .models import Course, Enrollment, Lesson
+from .models import Course, Enrollment, Lesson, Material
 from .decorators import enrollment_required
 
 
@@ -168,3 +168,26 @@ def lesson_details(request, pk, slug, lesson_pk):
         'lesson': lesson,
     }
     return render(request, 'courses/lesson_details.html', context)
+
+
+@login_required
+@enrollment_required
+def material_details(request, pk, slug, material_pk):
+    """Displays the embedded video of a lesson."""
+    course = request.course
+    material = get_object_or_404(Material, lesson__course=course, pk=pk)
+    lesson = material.lesson
+
+    if not request.user.is_staff and not lesson.is_available():
+        messages.error(request, 'Este material não está disponível.')
+        return redirect(lesson)
+    
+    if not material.is_embedded():
+        return redirect(material.resource.url)
+    
+    context = {
+        'course': course,
+        'lesson': lesson,
+        'material': material,
+    }
+    return render(request, 'courses/material_details.html', context)
