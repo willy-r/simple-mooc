@@ -3,6 +3,7 @@ from django.contrib import admin
 from .models import (
     Course, Enrollment, Announcement, Comment, Lesson, Material
 )
+from .forms import CourseFormAdmin
 
 
 class CourseAdmin(admin.ModelAdmin):
@@ -10,6 +11,7 @@ class CourseAdmin(admin.ModelAdmin):
     search_fields = ('name', 'slug')
     prepopulated_fields = {'slug': ('name',)}
     exclude = ('start_date',)
+    form = CourseFormAdmin
 
     def total_lessons(self, obj):
         """Returns the quantity of lessons released that the course has."""

@@ -35,6 +35,7 @@ class Course(models.Model):
         'Imagem', 
         upload_to='courses/images', 
         null=True, blank=True,
+        help_text='Use uma imagem com as dimensões 400 x 250.',
     )
     created_at = models.DateTimeField('Criado em', auto_now_add=True)
     updated_at = models.DateTimeField('Atualizado em', auto_now=True)

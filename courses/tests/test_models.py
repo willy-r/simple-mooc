@@ -41,6 +41,10 @@ class CourseModelTests(TestCase):
         self.assertEqual(self.fields['image'].upload_to, 'courses/images')
         self.assertTrue(self.fields['image'].blank)
         self.assertTrue(self.fields['image'].null)
+        self.assertEqual(
+            self.fields['image'].help_text, 
+            'Use uma imagem com as dimensões 400 x 250.',
+        )
     
     def test_created_at_field(self):
         self.assertEqual(self.fields['created_at'].verbose_name, 'Criado em')
