@@ -6,9 +6,9 @@ register = template.Library()
 
 
 @register.simple_tag
-def load_courses(user):
-    """Loads the courses of a user.
+def load_enrollments(user):
+    """Loads the enrollments of a user.
     
-    Usage: {% load_courses user as var %}{{ var }}
+    Usage: {% load_enrollments user as var %}{{ var }}
     """
     return Enrollment.objects.filter(user=user)

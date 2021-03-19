@@ -20,7 +20,13 @@
   <div class="well">
     <h2>
       {{ lesson }} 
-      <span class="fright">{{ lesson.release_date|date:'SHORT_DATE_FORMAT' }}</span>
+      <span class="fright">
+        {% if lesson.is_available %}
+          {{ lesson.release_date|date:'SHORT_DATE_FORMAT' }}
+        {% else %}
+          (Agendado: {{ lesson.release_date|date:'SHORT_DATE_FORMAT'|default:'Sem previsão' }})
+        {% endif %}
+      </span>
     </h2>
     {{ lesson.description|linebreaks }}
   
@@ -50,9 +56,15 @@
                       <i class="fas fa-video"></i> Acessar
                     </a>
                   {% else %}
-                    <a href="{{ material.resource.url }}" download="{{ material.resource.name }}" type="application/octet-stream">
-                      <i class="fas fa-download"></i> Baixar
+                    {% if material.resource %}
+                      <a href="{{ material.resource.url }}" download="{{ material.resource.name }}" type="application/octet-stream">
+                        <i class="fas fa-download"></i> Baixar
+                      </a>
+                    {% else %}
+                    <a href="#">
+                      <i class="fas fa-unlink"></i> Link Quebrado
                     </a>
+                    {% endif %}
                   {% endif %}
                 </td>
               </tr>

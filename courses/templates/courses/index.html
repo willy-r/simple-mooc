@@ -22,9 +22,9 @@
         <div class="l-box">
           <a href="{{ course.get_absolute_url }}">
             {% if course.image %}
-              <img src="{{ course.image.url }}" alt="Imagem do curso {{ course.name }}">
+              <img src="{{ course.image.url }}" alt="Imagem do curso {{ course }}">
             {% else %}
-              <img src="{% static 'images/course-image.png' %}" alt="Imagem do curso {{ course.name }}">
+              <img src="{% static 'images/course-image.png' %}" alt="Imagem do curso {{ course }}">
             {% endif %}
           </a>
         </div>
@@ -32,7 +32,7 @@
       <div class="pure-u-2-3">
         <div class="l-box">
           <h4 class="content-subhead">
-            <a href="{{ course.get_absolute_url }}">{{ course.name }}</a>
+            <a href="{{ course.get_absolute_url }}">{{ course }}</a>
           </h4>
           {{ course.description|linebreaks }}
         </div>

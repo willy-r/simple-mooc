@@ -3,7 +3,7 @@
 {% load static %}
 
 {% block title %}
-  | {{ course.name }}
+  | {{ course }}
 {% endblock %}
 
 {% block content %}
@@ -12,7 +12,7 @@
       <div class="pure-u-1">
         <div class="l-box splash-text">
           <h1 class="splash-head">
-            {{ course.name }}
+            {{ course }}
           </h1>
           <h2 class="splash-subhead">
             {{ course.description }}
@@ -38,9 +38,9 @@
       <div class="l-box">
         <a href="{{ course.get_absolute_url }}">
           {% if course.image %}
-            <img src="{{ course.image.url }}" alt="Imagem do curso {{ course.name }}">
+            <img src="{{ course.image.url }}" alt="Imagem do curso {{ course }}">
           {% else %}
-            <img src="{% static 'images/course-image.png' %}" alt="Imagem do curso {{ course.name }}">
+            <img src="{% static 'images/course-image.png' %}" alt="Imagem do curso {{ course }}">
           {% endif %}
         </a>
         
@@ -54,7 +54,7 @@
     <div class="pure-u-1">
       <h3>Tire sua dúvida sobre o curso</h3>
 
-      <form action="{% url 'courses:details' course.pk course.slug %}" class="pure-form pure-form-aligned" method="POST">
+      <form action="{{ course.get_absolute_url }}" class="pure-form pure-form-aligned" method="POST">
         {% csrf_token %}
         <fieldset>
           {{ form.non_field_errors }}

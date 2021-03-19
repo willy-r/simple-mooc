@@ -3,15 +3,15 @@
 {% block dashboard_content %}
   <form action="{% url 'courses:undo_enrollment' course.pk course.slug %}" method="POST">
     {% csrf_token %}
-    <h3>Você deseja realmente cancelar a inscrição do curso "<em>{{ course.name }}</em>"?</h3>
+    <h3>Você deseja realmente cancelar a inscrição do curso "<em>{{ course }}</em>"?</h3>
 
     <div class="pure-controls">
-      <button type="submit" class="pure-button button-error">
-          <i class="fas fa-times"></i> Sim, cancelar
-      </button>
       <a href="{% url 'accounts:dashboard' %}" class="pure-button pure-button-primary" rel="prev">
         <i class="fas fa-arrow-left"></i> Não, voltar
       </a>
+      <button type="submit" class="pure-button button-error">
+        <i class="fas fa-times"></i> Sim, cancelar
+      </button>
     </div>
   </form>
 {% endblock %}

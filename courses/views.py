@@ -1,3 +1,4 @@
+from django.urls import reverse
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
@@ -48,9 +49,9 @@ def make_enrollment(request, pk, slug):
     )
     if created:
         enrollment.approve()
-        messages.success(request, f'Você foi inscrito no curso "{course.name}" com sucesso!')
+        messages.success(request, f'Você foi inscrito no curso "{course}" com sucesso!')
     else:
-        messages.info(request, f'Você já está inscrito no curso "{course.name}".')
+        messages.info(request, f'Você já está inscrito no curso "{course}".')
     return redirect('accounts:dashboard')
 
 
@@ -61,7 +62,7 @@ def undo_enrollment(request, pk, slug):
     course = request.course
 
     if request.method == 'POST':
-        enrollment = course.enrollments.get(user=request.user, course=course)
+        enrollment = get_object_or_404(course.enrollments, user=request.user, course=course)
         enrollment.delete()
         messages.success(request, 'Sua inscrição foi cancelada com sucesso!')
         return redirect('accounts:dashboard')
@@ -95,12 +96,7 @@ def announcement_details(request, pk, slug, announcement_pk):
     if form.is_valid():
         form.save(request.user, announcement)
         messages.success(request, 'Seu comentário foi enviado.')
-        return redirect(
-            'courses:announcement_details',
-            pk=course.pk,
-            slug=course.slug,
-            announcement_pk=announcement.pk,
-        )
+        return redirect(announcement)
 
     context = {
         'course': course,
@@ -175,15 +171,16 @@ def lesson_details(request, pk, slug, lesson_pk):
 def material_details(request, pk, slug, material_pk):
     """Displays the embedded video of a lesson."""
     course = request.course
-    material = get_object_or_404(Material, lesson__course=course, pk=pk)
+    material = get_object_or_404(Material, lesson__course=course, pk=material_pk)
     lesson = material.lesson
 
     if not request.user.is_staff and not lesson.is_available():
         messages.error(request, 'Este material não está disponível.')
-        return redirect(lesson)
+        return redirect('courses:lessons', pk=course.pk, slug=course.slug)
     
     if not material.is_embedded():
-        return redirect(material.resource.url)
+        messages.error(request, 'Esta aula não possui um vídeo disponível, tente um dos recursos abaixo.')
+        return redirect(lesson)
     
     context = {
         'course': course,

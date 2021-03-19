@@ -17,11 +17,13 @@
         <a href="{{ lesson.get_absolute_url }}">
           {{ lesson }}
         </a>
-        {% if lesson.release_date %}
-          <span class="fright">{{ lesson.release_date|date:'SHORT_DATE_FORMAT' }}</span>
-        {% else %}
-          <span class="fright">(Não liberada)</span>
-        {% endif %}
+        <span class="fright">
+          {% if lesson.is_available %}
+            {{ lesson.release_date|date:'SHORT_DATE_FORMAT' }}
+          {% else %}
+            (Agendado: {{ lesson.release_date|date:'SHORT_DATE_FORMAT'|default:'Sem previsão' }})
+          {% endif %}
+        </span>
       </h2>
       {{ lesson.description|linebreaks|truncatechars:150 }}
       <p>  

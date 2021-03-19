@@ -76,6 +76,7 @@ class CustomPasswordResetForm(forms.Form):
         subject = 'Criar nova senha no Simple MOOC'
         context = {
             'reset': reset,
+            # Use get_current_site() because I have the request object.
             'domain': get_current_site(request).domain,
             'protocol': 'https' if use_https else 'http',
         }
