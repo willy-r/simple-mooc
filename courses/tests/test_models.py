@@ -118,9 +118,7 @@ class LessonModelTests(TestCase):
     
     def test_order_field(self):
         self.assertEqual(self.fields['order'].verbose_name, 'Ordem')
-        self.assertTrue(self.fields['order'].unique)
         self.assertEqual(self.fields['order'].help_text, 'Ordem de liberação da aula, começando do 1.')
-        self.assertEqual(self.fields['order'].error_messages['unique'], 'Aula com esta ordem já existe.')
 
     def test_release_date_field(self):
         self.assertEqual(self.fields['release_date'].verbose_name, 'Data de liberação')

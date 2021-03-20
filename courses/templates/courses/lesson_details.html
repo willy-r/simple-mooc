@@ -75,5 +75,28 @@
         <h4>Não disponível.</h4>
       {% endif %}
     </p>
+    
+    {% if prev_lesson or next_lesson %}
+      <p>
+        {% if prev_lesson %}
+          <a href="{% url 'courses:lesson_details' course.pk course.slug prev_lesson.pk %}" class="pure-button pure-button-primary">
+            <i class="fas fa-arrow-left"></i> Aula anterior
+          </a>
+        {% else %}
+          <button href="#" class="pure-button pure-button-primary pure-button-disabled">
+            <i class="fas fa-arrow-left"></i> Aula anterior
+          </button>
+        {% endif %}
+        {% if next_lesson %}
+          <a href="{% url 'courses:lesson_details' course.pk course.slug next_lesson.pk %}" class="pure-button pure-button-primary fright">
+            Próxima aula <i class="fas fa-arrow-right"></i>
+          </a>
+        {% else %}
+          <button href="#" class="pure-button pure-button-primary pure-button-disabled fright">
+            Próxima aula <i class="fas fa-arrow-right"></i>
+          </button>
+        {% endif %}
+      </p>
+    {% endif %}
   </div>
 {% endblock %}

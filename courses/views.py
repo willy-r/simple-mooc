@@ -1,4 +1,3 @@
-from django.urls import reverse
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
@@ -158,10 +157,23 @@ def lesson_details(request, pk, slug, lesson_pk):
     if not request.user.is_staff and not lesson.is_available():
         messages.error(request, 'Esta aula não está disponível.')
         return redirect('courses:lessons', pk=course.pk, slug=course.slug)
+    
+    # This just work if the instructor set the lesson order correctly.
+    try:
+        prev_lesson = course.released_lessons().get(order=lesson.order - 1)
+    except lesson.DoesNotExist:
+        prev_lesson = None
+    
+    try:
+        next_lesson = course.released_lessons().get(order=lesson.order + 1)
+    except lesson.DoesNotExist:
+        next_lesson = None
 
     context = {
         'course': course,
         'lesson': lesson,
+        'prev_lesson': prev_lesson,
+        'next_lesson': next_lesson,
     }
     return render(request, 'courses/lesson_details.html', context)
 

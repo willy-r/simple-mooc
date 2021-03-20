@@ -7,7 +7,7 @@ from django.core.files.images import get_image_dimensions
 
 from core.mail import send_mail_template
 
-from .models import Comment, Course
+from .models import Comment, Course, Lesson
 
 
 class ContactCourseForm(forms.Form):
@@ -66,3 +66,22 @@ class CourseFormAdmin(forms.ModelForm):
             if height != 250:
                 raise ValidationError(f'A imagem possui {height}px de altura. Ela precisa ter 250px.')
         return image
+
+
+class LessonFormAdmin(forms.ModelForm):
+    """A form for create/change a lesson on admin site.
+    
+    This form verify if the number of order in the lesson already exists.
+    """
+
+    def clean_order(self):
+        # There is a lesson order for this course with this order?
+        order = self.cleaned_data['order']
+        course = self.cleaned_data['course']
+        
+        if self.instance.order != order and \
+                Lesson.objects.filter(order=order, course=course).exists():
+            raise ValidationError(
+                f'Já existe uma aula no curso "{course}" com esta ordem.'
+            )
+        return order

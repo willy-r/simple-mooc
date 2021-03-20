@@ -71,11 +71,9 @@ class Lesson(models.Model):
     name = models.CharField('Nome', max_length=100)
     description = models.TextField('Descrição', blank=True)
     order = models.PositiveIntegerField(
-        'Ordem', 
-        unique=True, 
+        'Ordem',  
         validators=[MinValueValidator(1)],
         help_text='Ordem de liberação da aula, começando do 1.',
-        error_messages={'unique': 'Aula com esta ordem já existe.'},
     )
     release_date = models.DateField(
         'Data de liberação', 

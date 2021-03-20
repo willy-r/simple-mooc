@@ -3,7 +3,7 @@ from django.contrib import admin
 from .models import (
     Course, Enrollment, Announcement, Comment, Lesson, Material
 )
-from .forms import CourseFormAdmin
+from .forms import CourseFormAdmin, LessonFormAdmin
 
 
 class CourseAdmin(admin.ModelAdmin):
@@ -37,9 +37,10 @@ class LessonAdmin(admin.ModelAdmin):
     list_display = ('name', 'course', 'order', 'is_available', 'release_date')
     search_fields = ('name', 'description')
     list_filter = ('created_at', 'course')
-    list_editable = ('order', 'release_date')
+    list_editable = ('release_date',)
     list_select_related = ('course',)
     inlines = (MaterialInline,)
+    form = LessonFormAdmin
 
     def save_model(self, request, obj, form, change):
         # Define the start_date of a course with the release_date from
