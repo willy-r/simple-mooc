@@ -24,6 +24,7 @@
         <a class="pure-menu-heading" href="{% url 'core:home' %}"><i class="fas fa-home"></i> SIMPLE MOOC</a>
         <ul>
           <li class="pure-menu-selected"><a href="{% url 'core:home' %}">Início</a></li>
+          <!-- TODO <li class="pure-menu-selected"><a href="#">Sobre</a></li> -->
           <li><a href="{% url 'courses:index' %}">Cursos</a></li>
           <li><a href="{% url 'core:contact' %}">Contato</a></li>
           {% if user.is_authenticated %}

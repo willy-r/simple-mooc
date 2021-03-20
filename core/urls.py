@@ -12,4 +12,6 @@ urlpatterns = [
     path('', views.home, name='home'),
     # Ex: /contato/
     path('contato/', views.contact, name='contact'),
+    # Ex: /about/
+    # path('sobre/', views.about, name='about'),  # TODO
 ]

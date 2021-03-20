@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  | Sobre
+{% endblock %}
+
+{% block content %}
+  <div class="pure-g-r content-ribbon">
+    <div class="pure-u-1">
+      <h1>TODO</h1>
+      <p>
+        {% if students %}
+          {{ students.count }} Estudante{{ students.count|pluralize }}
+        {% endif %}
+        {% if courses %}
+          {{ courses.count }} Curso{{ courses.count|pluralize }}
+        {% endif %}
+        {% if instructors %}
+          {{ instructors.count }} Instrutor{{ instructor.count|pluralize:"es" }}
+        {% endif %}
+      </p>
+    </div>
+  </div>
+{% endblock %}
