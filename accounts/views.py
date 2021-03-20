@@ -13,8 +13,7 @@ from .models import PasswordReset
 @login_required
 def dashboard(request):
     """Displays the dashboard with courses of the user and some config options."""
-    context = {}
-    return render(request, 'accounts/dashboard.html', context)
+    return render(request, 'accounts/dashboard.html')
 
 
 @login_required

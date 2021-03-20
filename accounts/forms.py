@@ -8,7 +8,7 @@ from core.mail import send_mail_template
 
 from .models import PasswordReset
 
-user = get_user_model()
+User = get_user_model()
 
 
 class CustomUserCreationForm(forms.ModelForm):
@@ -25,7 +25,7 @@ class CustomUserCreationForm(forms.ModelForm):
     )
 
     class Meta:
-        model = user
+        model = User
         fields = ('username', 'email')
     
     def clean_password2(self):
@@ -48,7 +48,7 @@ class EditAccountForm(forms.ModelForm):
     """A form for updating the account information."""
     
     class Meta:
-        model = user
+        model = User
         fields = ('username', 'email', 'full_name')
 
 
@@ -59,7 +59,7 @@ class CustomPasswordResetForm(forms.Form):
     def clean_email(self):
         # There's a user with this e-mail on db?
         email = self.cleaned_data['email']
-        if not user.objects.filter(email=email).exists():
+        if not User.objects.filter(email=email).exists():
             raise ValidationError(
                 'Nenhum usuário encontrado com este e-mail.'
             )
@@ -68,7 +68,7 @@ class CustomPasswordResetForm(forms.Form):
     def save(self, request=None, use_https=False):
         """Generate a one-use link for resetting password and send it."""
         email = self.cleaned_data['email']
-        user_email = user.objects.get(email=email)
+        user_email = User.objects.get(email=email)
         token = default_token_generator.make_token(user_email)
         reset = PasswordReset(user=user_email, token=token)
         reset.save()

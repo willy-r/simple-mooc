@@ -21,10 +21,12 @@
         <ul>
           <li class="pure-menu-heading">
             Boas vindas, 
-            {% if user.is_staff %}
-              <strong>Administrador</strong>!
+            {% if user.is_superuser %}
+              <strong>{{ user.get_short_name }} — <em>admin</em></strong>
+            {% elif user.is_instructor  %}
+              <strong>{{ user.get_short_name }} — <em>instrutor</em></strong>
             {% else %}
-              <strong>{{ user }}</strong>!
+              <strong>{{ user.get_short_name }}</strong>
             {% endif %}
           </li>
           {% block menu_options %}

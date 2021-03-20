@@ -47,6 +47,10 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     def get_full_name(self):
         """Returns the full name or the username."""
         return str(self)
+    
+    def is_instructor(self):
+        """Returns True if the user is an instructor."""
+        return self.groups.filter(name='instructor').exists()
 
 
 class PasswordReset(models.Model):
