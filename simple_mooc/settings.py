@@ -28,7 +28,7 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = bool(int(os.getenv('DEBUG')))
 
-ALLOWED_HOSTS = ['simooc.herokuapp.com']
+ALLOWED_HOSTS = ['localhost', 'simooc.herokuapp.com']
 
 
 # Application definition
@@ -89,7 +89,8 @@ DATABASES = {
     }
 }
 
-DATABASES['default'] = dj_database_url.config(conn_max_age=500, ssl_require=True)
+PROD_DB = dj_database_url.config(conn_max_age=500, ssl_require=True)
+DATABASES['default'].update(PROD_DB)
 
 
 # Password validation
