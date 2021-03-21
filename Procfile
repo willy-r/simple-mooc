@@ -1,0 +1,1 @@
+web: gunicorn simple_mooc.wsgi
